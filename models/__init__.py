@@ -6,5 +6,6 @@ This module creates an instance of the FileStorege class which interacts between
 
 from models.engine.file_storage import FileStorage
 
+
 storage = FileStorage()
 storage.reload()

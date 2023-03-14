@@ -11,7 +11,9 @@ import models
 
 class BaseModel():
     """BaseModel
-    This class defines all common method/attributes for other classes
+    This class defines all common method/attributes for
+    other
+    classes
     """
 
     def __init__(self, *args, **kwargs):
