@@ -28,7 +28,8 @@ class HBNBCommand(cmd.Cmd):
 	
 	def do_create(self, arg):
 		"""
-		Creates a new instance of BaseModel, saves it (to the JSON 
+		Creates a new instance of BaseModel, saves it (to 
+		the JSON 
 		file) and prints the id. Ex: $ create BaseModel
 		"""
 		if (arg is None or len(arg) == 0):
@@ -40,17 +41,70 @@ class HBNBCommand(cmd.Cmd):
 			new_base.save()
 			print(new_base.id)
 	
-	def do_show(self, arg):
+	def do_show(self, line):
 		"""
-		Prints the string representation of an instance based on  
+		Prints the string representation of an instance 
+		based on  
 		the class name and id
+		Ex: $ show BaseModel 1234-1234-1234.
 		"""
-		if (arg is None or len(arg) == 0):
+		arg = line.split()
+		if (line is None or len(line) == 0):
 			print("** class name missing **")
-		elif (arg not in HBNBCommand.model_list):
+		elif (arg[0] not in HBNBCommand.model_list):
+			print(" ** class doesn\'t exist ** ")
+		elif (len(arg) < 2):
+			print("** instance id missing **")
+		else:
+			obj_dict = models.storage.all()
+			key = f'{arg[0]}.{arg[1]}'
+			if key in obj_dict:
+				print(obj_dict[key])
+			else:
+				print("** no instance found **")
+				
+	def do_destroy(self, line):
+		"""
+		Deletes an instance based on the class name and id 
+		(save the change into the JSON file). 
+		Ex: $ destroy BaseModel 1234-1234-1234.
+		"""
+		arg = line.split()
+		if (line is None or len(line) == 0):
+			print("** class name missing **")
+		elif (arg[0] not in HBNBCommand.model_list):
+			print(" ** class doesn\'t exist ** ")
+		elif (len(arg) < 2):
+			print("** instance id missing **")
+		else:
+			obj_dict = models.storage.all()
+			key = f'{arg[0]}.{arg[1]}'
+			if key in obj_dict:
+				del obj_dict[key]
+				models.storage.save()
+			else:
+				print("** no instance found **")
+	
+	def do_all(self, arg):
+		"""
+		Prints all string representation of all instances 
+		based or not on the class name. 
+		Ex: $ all BaseModel or $ all.
+		"""
+		
+		obj_list = []
+		obj_dict = models.storage.all()
+		
+		if (arg not in HBNBCommand.model_list):
 			print(" ** class doesn\'t exist ** ")
 		else:
-			pass
+			for key, value in obj_dict.items():
+				obj_list.append(str(value))
+				print(obj_list)
+		#else:
+			#print("** class doesn't exist **")
+	
+			
 	
 	
 	
@@ -59,5 +113,4 @@ class HBNBCommand(cmd.Cmd):
 			
 		
 if __name__ == '__main__':
-	HBNBCommand().cmdloop()	
-	
+	HBNBCommand().cmdloop()		
