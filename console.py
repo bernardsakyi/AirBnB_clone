@@ -5,17 +5,28 @@ This is a module that contains the entry point of the command
 interpereter
 """
 
-import cmd, sys
-import json
-from models.base_model import BaseModel
+import cmd
 from models.engine.file_storage import FileStorage
+import json
+from datetime import datetime
+from models.base_model import BaseModel
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.user import User
 import models
+
+
+
 
 class HBNBCommand(cmd.Cmd):
 	"""
 	This class contains method to operate the HBNB command console
 	"""
-	model_list = {'BaseModel': BaseModel}
+	model_list = {"BaseModel": BaseModel, "User": User, "State": State, "City": City,
+           "Amenity": Amenity, "Place": Place, "Review": Review}
 	prompt = '(hbnb)'
 	
 	def do_quit(self, arg):
